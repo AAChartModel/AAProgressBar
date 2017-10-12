@@ -32,10 +32,11 @@
     } else {
         AACircularProgressBar *circleProgressBar = [[AACircularProgressBar alloc]initWithFrame:CGRectMake(20, 100, 200, 200)];
         circleProgressBar.maxValue = 200;
+        circleProgressBar.unitString = @"万元";
         [self.view addSubview:circleProgressBar];
-        [UIView animateWithDuration:1 animations:^{
+//        [UIView animateWithDuration:1 animations:^{
             circleProgressBar.value = arc4random()%200;
-        }];
+//        }];
     }
 }
 

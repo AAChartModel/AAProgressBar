@@ -41,9 +41,9 @@
     return self;
 }
 
-- (void)drawRect:(CGRect)rect {
+//- (void)drawRect:(CGRect)rect {
 //后续考虑剔除 TrackPath,直接使用贝塞尔曲线充当路径
-}
+//}
 
 - (void)setUpTheBasicContent {
     self.lastValue = 0;

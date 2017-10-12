@@ -102,8 +102,12 @@
 
 - (void)configureTheTextContentLabel {
     _contentLabel = [[UILabel alloc]init];
+    _contentLabel.textAlignment = NSTextAlignmentCenter;
+    _contentLabel.bounds = CGRectMake(0, 0, 100, 30);
+    CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
+    _contentLabel.center = center;
     [self addSubview:_contentLabel];
-    _contentLabel.center = self.center;
+//    _contentLabel.center = self.center;
 }
 
 - (void)configureSelfShadowEffect {
