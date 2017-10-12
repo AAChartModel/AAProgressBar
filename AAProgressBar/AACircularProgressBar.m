@@ -1,6 +1,6 @@
 //
 //  AACircularProgressBar.m
-//  环形进度条
+//  AAProgressBarDemo
 //
 //  Created by An An on 2017/8/29.
 //  Copyright © 2017年 An An. All rights reserved.
@@ -9,8 +9,8 @@
 #import "AACircularProgressBar.h"
 @interface AACircularProgressBar()
 
-@property (nonatomic, strong) CAShapeLayer *progressLayer;
 @property (nonatomic, strong) CAShapeLayer *trackLayer;
+@property (nonatomic, strong) CAShapeLayer *progressLayer;
 @property (nonatomic, strong) UILabel *contentLabel;
 @property (nonatomic, assign) CGFloat lastValue;
 
@@ -18,63 +18,86 @@
 
 @implementation AACircularProgressBar
 
-
-
-- (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
+- (instancetype)init {
+    self = [super init];
     if (self) {
-        
-        self.lastValue = 0;
-        [self drawBackgroundCircle];
-        [self drwaProgressCircle];
-        [self configureTheTextContentLabel];
-        [self configureSelfShadowEffect];
-        
-        
+        [self setUpBasicContent];
     }
     return self;
 }
 
-- (void)drwaProgressCircle {
-    
-    _progressLayer = [CAShapeLayer layer];
-    _progressLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.width);
-    
-    CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
-    CGFloat radius = self.bounds.size.width/2-6;
-    
-    //    UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    
-    
-    [path addArcWithCenter:center radius:radius startAngle:0 endAngle:2*M_PI clockwise:YES];
-    _progressLayer.path = path.CGPath;
-    
-    _progressLayer.fillColor = [UIColor clearColor].CGColor;
-    _progressLayer.lineWidth = 3.f;
-    _progressLayer.lineCap = kCALineCapRound;
-    _progressLayer.strokeColor = [UIColor redColor].CGColor;
-    
-    [self.layer addSublayer:_progressLayer];
-    
-    
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setUpBasicContent];
+    }
+    return self;
 }
 
-- (void)drawBackgroundCircle {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self setUpBasicContent];
+    }
+    return self;
+}
+
+- (void)setUpBasicContent {
+    self.lastValue = 0;
+    [self drawTrackCircle];
+    [self drawProgressCircle];
+    [self configureTheTextContentLabel];
+    [self configureSelfShadowEffect];
+}
+
+- (void)drawTrackCircle {
+
+    CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
+    CGFloat radius = self.bounds.size.width/2-6;
+    UIBezierPath *trackPath = [UIBezierPath bezierPath];
+    [trackPath addArcWithCenter:center
+                         radius:radius
+                     startAngle:0
+                       endAngle:2*M_PI
+                      clockwise:YES];
+    
     _trackLayer = [CAShapeLayer layer];
     _trackLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-    _trackLayer.lineWidth = 3.f;
+    _trackLayer.lineWidth = 10.f;
     _trackLayer.strokeColor = [UIColor grayColor].CGColor;
     _trackLayer.fillColor = self.backgroundColor.CGColor;
     _trackLayer.lineCap = kCALineCapRound;
+    _trackLayer.path=trackPath.CGPath;
     [self.layer addSublayer:_trackLayer];
-    
+
+}
+
+- (void)drawProgressCircle {
     CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
     CGFloat radius = self.bounds.size.width/2-6;
+    //    UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
+    UIBezierPath *path = [UIBezierPath bezierPath];
     
-    UIBezierPath *trackPath = [UIBezierPath bezierPath];
-    [trackPath addArcWithCenter:center radius:radius startAngle:0 endAngle:2*M_PI clockwise:YES];
-    _trackLayer.path=trackPath.CGPath;
+    //    各个参数的意义：
+    //    center：圆心的坐标
+    //    radius：半径
+    //    startAngle：起始的弧度
+    //    endAngle：圆弧结束的弧度
+    //    clockwise：YES为顺时针，No为逆时针
+    [path addArcWithCenter:center
+                    radius:radius
+                startAngle:0
+                  endAngle:2*M_PI
+                 clockwise:YES];
+    
+    _progressLayer = [CAShapeLayer layer];
+    _progressLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.width);
+    _progressLayer.fillColor = [UIColor clearColor].CGColor;
+    _progressLayer.lineWidth = 9.f;
+    _progressLayer.lineCap = kCALineCapRound;
+    _progressLayer.strokeColor = [UIColor redColor].CGColor;
+    _progressLayer.path = path.CGPath;
+    [self.layer addSublayer:_progressLayer];
 }
 
 - (void)configureTheTextContentLabel {
@@ -135,18 +158,18 @@
     NSMutableParagraphStyle* textStyle = NSMutableParagraphStyle.defaultParagraphStyle.mutableCopy;
     textStyle.alignment = NSTextAlignmentLeft;
     
-    NSDictionary* valueFontAttributes = @{NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue-Bold" size:27],
-                                          NSForegroundColorAttributeName: [UIColor blackColor],
-                                          NSParagraphStyleAttributeName: textStyle};
+    NSDictionary* valueFontAttributes = @{NSFontAttributeName:[UIFont fontWithName: @"HelveticaNeue-Bold" size:27],
+                                          NSForegroundColorAttributeName:[UIColor blackColor],
+                                          NSParagraphStyleAttributeName:textStyle};
     
     NSMutableAttributedString *text = [NSMutableAttributedString new];
     NSAttributedString* value = [[NSAttributedString alloc] initWithString:textContent attributes:valueFontAttributes];
     [text appendAttributedString:value];
     
     
-    NSDictionary* unitFontAttributes = @{NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue-Thin" size:9],
-                                         NSForegroundColorAttributeName: [UIColor blackColor],
-                                         NSParagraphStyleAttributeName: textStyle};
+    NSDictionary* unitFontAttributes = @{NSFontAttributeName:[UIFont fontWithName: @"HelveticaNeue-Thin" size:9],
+                                         NSForegroundColorAttributeName:[UIColor blackColor],
+                                         NSParagraphStyleAttributeName:textStyle};
     
     NSAttributedString* unit = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",self.unitString] attributes:unitFontAttributes];
     [text appendAttributedString:unit];
