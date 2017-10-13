@@ -7,6 +7,10 @@
 //
 
 #import "AALinearProgressBar.h"
+//#define KProgressBorderWidth 2.0f
+#define KProgressPadding 1.0f
+//#define KProgressColor [UIColor colorWithRed:0/255.0 green:191/255.0 blue:255/255.0 alpha:1]
+#define KHWWaveFillColor [UIColor groupTableViewBackgroundColor] //填充颜色
 @interface AALinearProgressBar()
 
 @property (nonatomic, strong) CAShapeLayer *trackLayer;
@@ -41,25 +45,64 @@
     return self;
 }
 
-//- (void)drawRect:(CGRect)rect {
-//后续考虑剔除 TrackPath,直接使用贝塞尔曲线充当路径
-//}
+- (void)drawRect:(CGRect)rect {
+//    self.layer.backgroundColor = [UIColor whiteColor].CGColor;
+////后续考虑剔除 TrackPath,直接使用贝塞尔曲线充当路径
+//    CGContextRef context = UIGraphicsGetCurrentContext();
+//
+//    CGMutablePathRef path = CGPathCreateMutable();
+//    CGPathMoveToPoint(path, NULL, 10, self.frame.size.height/2);
+//    CGPathAddLineToPoint(path, NULL, self.frame.size.width-10, self.frame.size.height/2);
+//
+//    CGPathRef thickPath = CGPathCreateCopyByStrokingPath(path, NULL, 30, kCGLineCapButt, kCGLineJoinBevel, 0);
+//    CGContextAddPath(context, thickPath);
+//
+//    CGContextSetStrokeColorWithColor(context, [UIColor purpleColor].CGColor);
+//    CGContextSetFillColorWithColor(context, [UIColor blueColor].CGColor);
+//    CGContextSetLineWidth(context, 3);
+//    CGContextDrawPath(context, kCGPathFillStroke);
+//
+//    CGPathRelease(thickPath);
+//    CGPathRelease(path);
+    
+    //NO.6椭圆
+     
+    UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:rect];
+    [KHWWaveFillColor setFill];
+    [path fill];
+    [path addClip];
+    
+    self.lastValue = 0;
+    [self drawProgressLine];
+    [self drawTrackLine];
+}
 
 - (void)setUpTheBasicContent {
-    self.lastValue = 0;
-    [self drawTrackLine];
-    [self drawProgressLine];
+
+
 }
 
 - (void)drawTrackLine {
-    _trackLayer = [CAShapeLayer layer];
-    _trackLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-    _trackLayer.fillColor = self.backgroundColor.CGColor;
-    _trackLayer.strokeColor = [UIColor  lightGrayColor].CGColor;
-    _trackLayer.lineWidth = 15.f;
-    _trackLayer.lineCap = kCALineCapRound;
-    _trackLayer.path = [self configureBezierTrackPath].CGPath;
-    [self.layer addSublayer:_trackLayer];
+//    _trackLayer = [CAShapeLayer layer];
+//    _trackLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+//    _trackLayer.fillColor = self.backgroundColor.CGColor;
+//    _trackLayer.strokeColor = [UIColor  lightGrayColor].CGColor;
+//    _trackLayer.lineWidth = 15.f;
+//    _trackLayer.borderWidth = 3;
+//    _trackLayer.borderColor = [UIColor purpleColor].CGColor;
+//    _trackLayer.lineCap = kCALineCapRound;
+//    _trackLayer.path = [self configureBezierTrackPath].CGPath;
+//    [self.layer addSublayer:_trackLayer];
+    
+//    //边框
+//    UIView *borderView = [[UIView alloc] initWithFrame:self.bounds];
+//    borderView.layer.cornerRadius = self.bounds.size.height * 0.5;
+//    borderView.layer.masksToBounds = YES;
+//    borderView.backgroundColor = [UIColor clearColor];
+//    borderView.layer.borderColor = [KProgressColor CGColor];
+//    borderView.layer.borderWidth = KProgressBorderWidth;
+//    [self addSubview:borderView];
+
 }
 
 - (void)drawProgressLine {
@@ -67,7 +110,7 @@
     _progressLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.width);
     _progressLayer.fillColor = [UIColor clearColor].CGColor;//相当于self.backgroundColor.CGColor;
     _progressLayer.strokeColor = [UIColor redColor].CGColor;
-    _progressLayer.lineWidth = 13.f;
+    _progressLayer.lineWidth = self.bounds.size.height-KProgressPadding*2;
     _progressLayer.lineCap = kCALineCapRound;
     _progressLayer.path = [self configureBezierTrackPath].CGPath;
     [self.layer addSublayer:_progressLayer];
@@ -77,10 +120,17 @@
    UIBezierPath * trackPath = [UIBezierPath bezierPath];
     trackPath.lineCapStyle  = kCGLineCapSquare;//????是啥
     trackPath.lineJoinStyle = kCGLineCapRound;
-    [trackPath moveToPoint:CGPointMake(10, self.center.y)];// 起点
-    [trackPath addLineToPoint:CGPointMake(self.frame.size.width-10, self.center.y)];// 绘制线条
+    [trackPath moveToPoint:CGPointMake(10, self.frame.size.height/2)];// 起点
+    [trackPath addLineToPoint:CGPointMake(self.frame.size.width-10, self.frame.size.height/2)];
+
     [trackPath stroke];
     return trackPath;
+}
+
+- (void)drawEmptyBar:(CGRect)rect context:(CGContextRef)c{
+    
+ 
+
 }
 
 - (void)startAnimation {

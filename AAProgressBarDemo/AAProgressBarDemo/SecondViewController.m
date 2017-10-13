@@ -21,14 +21,15 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     if ([self.progressBarType isEqualToString:@"linear"]) {
-        AALinearProgressBar *linearProgressBar = [[AALinearProgressBar alloc]initWithFrame:CGRectMake(20, 100, 200, 50)];
+        AALinearProgressBar *linearProgressBar = [[AALinearProgressBar alloc]initWithFrame:CGRectMake(20, 300, 200, 50)];
+//        linearProgressBar.backgroundColor = [UIColor grayColor];
         linearProgressBar.trackLineColor = [UIColor blueColor];
         linearProgressBar.progressLineColor = [UIColor redColor];
         linearProgressBar.maxValue = 100;
         [self.view addSubview:linearProgressBar];
-        [UIView animateWithDuration:1 animations:^{
+//        [UIView animateWithDuration:1 animations:^{
             linearProgressBar.value = arc4random()%100;
-        }];
+//        }];
     } else {
         AACircularProgressBar *circleProgressBar = [[AACircularProgressBar alloc]initWithFrame:CGRectMake(20, 100, 200, 200)];
         circleProgressBar.maxValue = 200;

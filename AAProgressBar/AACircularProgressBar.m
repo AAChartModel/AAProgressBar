@@ -65,6 +65,8 @@
     _trackLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     _trackLayer.lineWidth = 10.f;
     _trackLayer.strokeColor = [UIColor grayColor].CGColor;
+    _trackLayer.borderWidth = 3;
+    _trackLayer.borderColor = [UIColor purpleColor].CGColor;
     _trackLayer.fillColor = self.backgroundColor.CGColor;
     _trackLayer.lineCap = kCALineCapRound;
     _trackLayer.path=trackPath.CGPath;
