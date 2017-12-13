@@ -11,6 +11,7 @@
 #import "AALinearProgressBar.h"
 #import "AACircularProgressBar.h"
 #import "AARippleView.h"
+#import "CustomDownLoadButton.h"
 @interface SecondViewController ()
 
 @end
@@ -33,20 +34,25 @@
             linearProgressBar.value = arc4random()%100;
 //        }];
     } else {
-        AACircularProgressBar *circleProgressBar = [[AACircularProgressBar alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-100, 100, 120, 120)];
-        circleProgressBar.maxValue = 200;
-        circleProgressBar.unitString = @"下载中";
-        [self.view addSubview:circleProgressBar];
-        circleProgressBar.value = arc4random()%200;
+//        AACircularProgressBar *circleProgressBar = [[AACircularProgressBar alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-100, 100, 120, 120)];
+//        circleProgressBar.maxValue = 200;
+//        circleProgressBar.unitString = @"下载中";
+//        [self.view addSubview:circleProgressBar];
+//        circleProgressBar.value = arc4random()%200;
+////
+//        AARippleView *rippleView = [[AARippleView alloc]init];
+//        rippleView.center = circleProgressBar.center;
+//        rippleView.bounds = CGRectMake(0,0,circleProgressBar.bounds.size.width*2, circleProgressBar.bounds.size.width*2);
+//        [self.view addSubview:rippleView];
 //
-        AARippleView *rippleView = [[AARippleView alloc]init];
-        rippleView.center = circleProgressBar.center;
-        rippleView.bounds = CGRectMake(0,0,circleProgressBar.bounds.size.width*2, circleProgressBar.bounds.size.width*2);
-        [self.view addSubview:rippleView];
+//        [self.view bringSubviewToFront:circleProgressBar];
+//
+//        [rippleView beginAnimation];
         
-        [self.view bringSubviewToFront:circleProgressBar];
         
-        [rippleView beginAnimation];
+        
+        CustomDownLoadButton *downLoadBtn = [[CustomDownLoadButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-100, 100, 120, 120)];
+        [self.view addSubview:downLoadBtn];
      }
 }
 
