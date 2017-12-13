@@ -9,6 +9,10 @@
 #import "AACircularProgressBar.h"
 @interface AACircularProgressBar()
 
+
+#define kProgressBarThemeColor   [self colorWithHexString:@"#b89062"]
+
+
 @property (nonatomic, strong) CAShapeLayer *trackLayer;
 @property (nonatomic, strong) CAShapeLayer *progressLayer;
 @property (nonatomic, strong) UILabel *contentLabel;
@@ -50,6 +54,7 @@
     [self configureSelfShadowEffect];
 }
 
+
 - (void)drawTrackCircle {
 
     CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
@@ -64,11 +69,11 @@
     _trackLayer = [CAShapeLayer layer];
     _trackLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     _trackLayer.lineWidth = 10.f;
-    _trackLayer.strokeColor = [UIColor grayColor].CGColor;
-    _trackLayer.borderWidth = 3;
-    _trackLayer.borderColor = [UIColor purpleColor].CGColor;
+//    _trackLayer.strokeColor = [UIColor grayColor].CGColor;
+//    _trackLayer.borderWidth = 3;
+//    _trackLayer.borderColor = [UIColor purpleColor].CGColor;
     _trackLayer.fillColor = self.backgroundColor.CGColor;
-    _trackLayer.lineCap = kCALineCapRound;
+    _trackLayer.lineCap = kCALineCapSquare;
     _trackLayer.path=trackPath.CGPath;
     [self.layer addSublayer:_trackLayer];
 
@@ -76,7 +81,7 @@
 
 - (void)drawProgressCircle {
     CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
-    CGFloat radius = self.bounds.size.width/2-6;
+    CGFloat radius = self.bounds.size.width/2-2;
     //    UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
     UIBezierPath *path = [UIBezierPath bezierPath];
     
@@ -95,18 +100,31 @@
     _progressLayer = [CAShapeLayer layer];
     _progressLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.width);
     _progressLayer.fillColor = [UIColor clearColor].CGColor;
-    _progressLayer.lineWidth = 9.f;
+    _progressLayer.lineWidth = 4.f;
     _progressLayer.lineCap = kCALineCapRound;
-    _progressLayer.strokeColor = [UIColor redColor].CGColor;
+    _progressLayer.strokeColor = kProgressBarThemeColor.CGColor;
     _progressLayer.path = path.CGPath;
+
+
     [self.layer addSublayer:_progressLayer];
+    
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.frame = _progressLayer.frame;
+    gradientLayer.colors = @[(__bridge id)kProgressBarThemeColor.CGColor,(__bridge id)[self colorWithHexString:@"#fae2ad"].CGColor ];
+    gradientLayer.startPoint = CGPointMake(0.5,0);
+    gradientLayer.endPoint = CGPointMake(0.5,1);
+    
+    [self.layer addSublayer:gradientLayer];
+    //Using arc as a mask instead of adding it as a sublayer.
+    //[self.view.layer addSublayer:arc];
+    gradientLayer.mask = _progressLayer;
 }
 
 - (void)configureTheTextContentLabel {
     _contentLabel = [[UILabel alloc]init];
     _contentLabel.textAlignment = NSTextAlignmentCenter;
-    _contentLabel.bounds = CGRectMake(0, 0, 100, 30);
-    CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
+    _contentLabel.bounds = CGRectMake(0, 0, self.bounds.size.width, 30);
+    CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height+20);
     _contentLabel.center = center;
     [self addSubview:_contentLabel];
 //    _contentLabel.center = self.center;
@@ -162,22 +180,22 @@
 
 - (NSAttributedString *)configureTheTextContent:(NSString *)textContent {
     NSMutableParagraphStyle* textStyle = NSMutableParagraphStyle.defaultParagraphStyle.mutableCopy;
-    textStyle.alignment = NSTextAlignmentLeft;
+    textStyle.alignment = NSTextAlignmentCenter;
     
     NSDictionary* valueFontAttributes = @{NSFontAttributeName:[UIFont fontWithName: @"HelveticaNeue-Bold" size:27],
-                                          NSForegroundColorAttributeName:[UIColor blackColor],
+                                          NSForegroundColorAttributeName:kProgressBarThemeColor,
                                           NSParagraphStyleAttributeName:textStyle};
     
     NSMutableAttributedString *text = [NSMutableAttributedString new];
-    NSAttributedString* value = [[NSAttributedString alloc] initWithString:textContent attributes:valueFontAttributes];
+    NSAttributedString* value = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%%",textContent] attributes:valueFontAttributes];
     [text appendAttributedString:value];
     
     
-    NSDictionary* unitFontAttributes = @{NSFontAttributeName:[UIFont fontWithName: @"HelveticaNeue-Thin" size:9],
-                                         NSForegroundColorAttributeName:[UIColor blackColor],
+    NSDictionary* unitFontAttributes = @{NSFontAttributeName:[UIFont fontWithName: @"HelveticaNeue" size:13],
+                                         NSForegroundColorAttributeName:[UIColor grayColor],
                                          NSParagraphStyleAttributeName:textStyle};
     
-    NSAttributedString* unit = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",self.unitString] attributes:unitFontAttributes];
+    NSAttributedString* unit = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@   ",self.unitString] attributes:unitFontAttributes];
     [text appendAttributedString:unit];
     return text;
 }
@@ -186,5 +204,41 @@
     _value = value;
     [self startAnimation];
 }
+
+- (UIColor *)colorWithHexString:(NSString *)stringToConvert
+{
+    NSString *cString = [[stringToConvert stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
+    
+    // String should be 6 or 8 characters
+    if ([cString length] < 6) {
+        return [UIColor clearColor];
+    }
+    
+    // strip 0X if it appears
+    if ([cString hasPrefix:@"0X"])
+        cString = [cString substringFromIndex:2];
+    if ([cString hasPrefix:@"#"])
+        cString = [cString substringFromIndex:1];
+    if ([cString length] != 6)
+        return [UIColor clearColor];
+    
+    NSScanner *scanner = [NSScanner scannerWithString:cString];
+    unsigned hexNum;
+    if (![scanner scanHexInt:&hexNum]) return nil;
+    return [self colorWithRGBHex:hexNum];
+}
+
+- (UIColor *)colorWithRGBHex:(UInt32)hex
+{
+    int r = (hex >> 16) & 0xFF;
+    int g = (hex >> 8) & 0xFF;
+    int b = (hex) & 0xFF;
+    
+    return [UIColor colorWithRed:r / 255.0f
+                           green:g / 255.0f
+                            blue:b / 255.0f
+                           alpha:1.0f];
+}
+
 
 @end

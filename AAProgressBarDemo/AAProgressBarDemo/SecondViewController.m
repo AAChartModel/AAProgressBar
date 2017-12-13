@@ -10,11 +10,13 @@
 //#import "AAProgressBar.h"
 #import "AALinearProgressBar.h"
 #import "AACircularProgressBar.h"
+#import "AARippleView.h"
 @interface SecondViewController ()
 
 @end
 
 @implementation SecondViewController
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -31,14 +33,21 @@
             linearProgressBar.value = arc4random()%100;
 //        }];
     } else {
-        AACircularProgressBar *circleProgressBar = [[AACircularProgressBar alloc]initWithFrame:CGRectMake(20, 100, 200, 200)];
+        AACircularProgressBar *circleProgressBar = [[AACircularProgressBar alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-100, 100, 120, 120)];
         circleProgressBar.maxValue = 200;
-        circleProgressBar.unitString = @"万元";
+        circleProgressBar.unitString = @"下载中";
         [self.view addSubview:circleProgressBar];
-//        [UIView animateWithDuration:1 animations:^{
-            circleProgressBar.value = arc4random()%200;
-//        }];
-    }
+        circleProgressBar.value = arc4random()%200;
+//
+        AARippleView *rippleView = [[AARippleView alloc]init];
+        rippleView.center = circleProgressBar.center;
+        rippleView.bounds = CGRectMake(0,0,circleProgressBar.bounds.size.width*2, circleProgressBar.bounds.size.width*2);
+        [self.view addSubview:rippleView];
+        
+        [self.view bringSubviewToFront:circleProgressBar];
+        
+        [rippleView beginAnimation];
+     }
 }
 
 @end

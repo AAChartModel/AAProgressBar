@@ -16,4 +16,7 @@
 
 @property (nonatomic,copy)   NSString  *unitString;
 
+- (void)startWork;
+- (void)stopWork;
+
 @end

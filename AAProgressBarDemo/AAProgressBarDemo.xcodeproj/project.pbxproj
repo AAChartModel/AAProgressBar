@@ -13,6 +13,7 @@
 		275498711F78DBB5009672CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 275498701F78DBB5009672CE /* Assets.xcassets */; };
 		275498741F78DBB5009672CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 275498721F78DBB5009672CE /* LaunchScreen.storyboard */; };
 		275498771F78DBB5009672CE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 275498761F78DBB5009672CE /* main.m */; };
+		27A454F91FE102BC00CC212F /* AARippleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A454F81FE102BC00CC212F /* AARippleView.m */; };
 		27D80FB41F8DF96A0065CBB4 /* AALinearProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D80FB31F8DF96A0065CBB4 /* AALinearProgressBar.m */; };
 		27D80FB71F8DFA8F0065CBB4 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D80FB61F8DFA8F0065CBB4 /* SecondViewController.m */; };
 		27D80FBB1F8E0B040065CBB4 /* AACircularProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D80FBA1F8E0B040065CBB4 /* AACircularProgressBar.m */; };
@@ -29,6 +30,8 @@
 		275498731F78DBB5009672CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		275498751F78DBB5009672CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		275498761F78DBB5009672CE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		27A454F71FE102BC00CC212F /* AARippleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AARippleView.h; sourceTree = "<group>"; };
+		27A454F81FE102BC00CC212F /* AARippleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AARippleView.m; sourceTree = "<group>"; };
 		27D80FB21F8DF96A0065CBB4 /* AALinearProgressBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AALinearProgressBar.h; sourceTree = "<group>"; };
 		27D80FB31F8DF96A0065CBB4 /* AALinearProgressBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AALinearProgressBar.m; sourceTree = "<group>"; };
 		27D80FB51F8DFA8F0065CBB4 /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
@@ -92,6 +95,8 @@
 				27D80FB31F8DF96A0065CBB4 /* AALinearProgressBar.m */,
 				27D80FB91F8E0B040065CBB4 /* AACircularProgressBar.h */,
 				27D80FBA1F8E0B040065CBB4 /* AACircularProgressBar.m */,
+				27A454F71FE102BC00CC212F /* AARippleView.h */,
+				27A454F81FE102BC00CC212F /* AARippleView.m */,
 			);
 			name = AAProgressBar;
 			path = ../../AAProgressBar;
@@ -169,6 +174,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27D80FB71F8DFA8F0065CBB4 /* SecondViewController.m in Sources */,
+				27A454F91FE102BC00CC212F /* AARippleView.m in Sources */,
 				2754986C1F78DBB5009672CE /* ViewController.m in Sources */,
 				275498771F78DBB5009672CE /* main.m in Sources */,
 				27D80FBB1F8E0B040065CBB4 /* AACircularProgressBar.m in Sources */,
