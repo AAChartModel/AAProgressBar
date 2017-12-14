@@ -9,11 +9,13 @@
 #import "AADownLoadButton.h"
 #import "AACircularProgressBar.h"
 #import "AARippleView.h"
+#import "AADrawLineWithAnimationView.h"
 
 @interface AADownLoadButton() {
     AACircularProgressBar *_circleProgressBar;
     AARippleView *_rippleView;
     UILabel *_contentLabel;
+    AADrawLineWithAnimationView *lineView;
     
 
 }
@@ -29,6 +31,15 @@
         [self setUpTheBackgroundRippleView];
         [self bringSubviewToFront:_circleProgressBar];
         [self setUpTheTextContentLabel];
+        
+        lineView = [[AADrawLineWithAnimationView alloc]init];
+//        lineView.center = self.center;
+//        lineView.bounds = CGRectMake(0, 0, self.bounds.size.width*0.2, self.bounds.size.height*0.2);
+        
+        lineView.center = _circleProgressBar.center;
+        lineView.bounds = CGRectMake(0,0,_circleProgressBar.bounds.size.width*0.17, _circleProgressBar.bounds.size.width*0.17);
+        [lineView setUpTheUIViews];
+        [self addSubview:lineView];
     }
     return self;
 }
@@ -91,6 +102,7 @@
     return text;
 }
 
+
 - (void)configureTheSingleTapgesture {
     UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(singleTapEvent)];
     singleTapGesture.numberOfTapsRequired = 1;
@@ -98,12 +110,17 @@
 }
 
 - (void)singleTapEvent {
-    self.isWorking = !self.isWorking;
-    if (self.isWorking == YES) {
+    _isWorking = !_isWorking;
+    if (_isWorking == YES) {
         [_rippleView beginAnimation];
+       lineView.isDownloading = YES;
     } else {
         [_rippleView stopAnimation];
+        lineView.isDownloading = NO;;
     }
+    NSNumber *valueNum = [NSNumber numberWithFloat:_progressValue*100];
+    _contentLabel.attributedText = [self configureTheTextContent:[NSString stringWithFormat:@"%@",valueNum]];
+
     
     if (self.didSelectedBlock != nil) {
         self.didSelectedBlock(_isWorking);
@@ -124,8 +141,8 @@
 - (void)setIsWorking:(BOOL)isWorking {
     _isWorking = isWorking;
     [_rippleView beginAnimation];
+   lineView.isDownloading = YES;
 }
-
 
 
 

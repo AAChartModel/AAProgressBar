@@ -4,6 +4,8 @@
 //
 //  Created by An An on 2017/8/28.
 //  Copyright © 2017年 An An. All rights reserved.
+//  source code ----*** https://github.com/AAChartModel/AAMapStudio ***--- source code
+//
 
 
 #import "AARippleView.h"
@@ -19,8 +21,8 @@
     self = [super init];
     if (self) {
         self.visionColor = [UIColor redColor];
-        self.instanceDelay = 0.1;
-        self.instanceCount = 6;
+        self.instanceDelay = 1;
+        self.instanceCount = 4;
     }
     return self;
 }
@@ -58,14 +60,14 @@
     
     CABasicAnimation *scaleAnimation =[CABasicAnimation animationWithKeyPath:@"transform"];
     CATransform3D t = CATransform3DIdentity;
-    CATransform3D t2 = CATransform3DScale(t, 0.0, 0.0, 0.0);
+    CATransform3D t2 = CATransform3DScale(t, 0.5, 0.5, 0.0);
     scaleAnimation.fromValue = [NSValue valueWithCATransform3D:t2];
     CATransform3D t3 = CATransform3DScale(t, 1.0, 1.0, 0.0);
     scaleAnimation.toValue = [NSValue valueWithCATransform3D:t3];
     
     CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
     animationGroup.animations = @[alphaAnimation, scaleAnimation];
-    animationGroup.duration = 2.0;
+    animationGroup.duration = 4.0;
     animationGroup.autoreverses = NO;
     animationGroup.repeatCount = HUGE;
     

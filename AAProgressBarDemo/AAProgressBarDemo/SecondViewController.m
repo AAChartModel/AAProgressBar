@@ -15,6 +15,9 @@
 @interface SecondViewController ()<AADownLoadButtonDidSelectedDelegate> {
     NSTimer *_timer;
     AADownLoadButton *downLoadBtn;
+    AARippleView *rippleView;
+    
+    BOOL isWorking;
 }
 
 @end
@@ -43,24 +46,24 @@
 //        [self.view addSubview:circleProgressBar];
 //        circleProgressBar.value = arc4random()%200;
 ////
-//        AARippleView *rippleView = [[AARippleView alloc]init];
+//        rippleView = [[AARippleView alloc]init];
 //        rippleView.center = circleProgressBar.center;
 //        rippleView.bounds = CGRectMake(0,0,circleProgressBar.bounds.size.width*2, circleProgressBar.bounds.size.width*2);
 //        [self.view addSubview:rippleView];
-//
+
 //        [self.view bringSubviewToFront:circleProgressBar];
-//
-//        [rippleView beginAnimation];
+
+        [rippleView beginAnimation];
+        isWorking = YES;
         
-        
-        
+
+
         downLoadBtn = [[AADownLoadButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-100, 100, 120, 120)];
         [self.view addSubview:downLoadBtn];
-        
-        
-        downLoadBtn.progressValue = 0.67;
         downLoadBtn.isWorking = YES;
         downLoadBtn.didSelectedDelegate = self;
+        downLoadBtn.progressValue = 0.67;
+
         
         
 //        downLoadBtn.didSelectedBlock = ^(BOOL isWorking) {
@@ -69,11 +72,11 @@
         
 //        [self virtualUpdateTheChartViewDataInRealTime];
         
-//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-//        button.frame = CGRectMake(0, 200, 50, 50);
-//        button.backgroundColor = [UIColor redColor];
-//        [self.view addSubview:button];
-//        [button addTarget:self action:@selector(buttonClickedHa) forControlEvents:UIControlEventTouchUpInside];
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.frame = CGRectMake(0, 200, 50, 50);
+        button.backgroundColor = [UIColor redColor];
+        [self.view addSubview:button];
+        [button addTarget:self action:@selector(buttonClickedHa) forControlEvents:UIControlEventTouchUpInside];
         
      
      }
@@ -95,10 +98,19 @@
 }
 
 - (void)buttonClickedHa {
-    CGFloat value = arc4random()%100*0.01;
-    downLoadBtn.progressValue = arc4random()%100*0.01;
-    downLoadBtn.isWorking = YES;
-    NSLog(@"定时器开启了%@",[NSNumber numberWithFloat:value]);
+//    CGFloat value = arc4random()%100*0.01;
+//    downLoadBtn.progressValue = arc4random()%100*0.01;
+//    downLoadBtn.isWorking = YES;
+//    NSLog(@"定时器开启了%@",[NSNumber numberWithFloat:value]);
+    
+    if (isWorking == YES) {
+        [rippleView stopAnimation];
+       
+    } else {
+        [rippleView beginAnimation];
+    }
+    isWorking = !isWorking;
+
 
 }
 
@@ -106,7 +118,7 @@
 - (void)AADownLoadButtonDidSelectedWithWorkingState:(BOOL)isWorking {
     NSString *str = isWorking ==YES?@"当前状态是正在下载中":@"当前状态是暂停中";
     
-    
+  
     
     
     

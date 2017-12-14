@@ -7,12 +7,14 @@
 //
 
 #import "AACircularProgressBar.h"
-@interface AACircularProgressBar()
 
 
 #define kProgressBarThemeColor   [self colorWithHexString:@"#b89062"]
 
+@interface AACircularProgressBar() {
+    
 
+}
 @property (nonatomic, strong) CAShapeLayer *trackLayer;
 @property (nonatomic, strong) CAShapeLayer *progressLayer;
 @property (nonatomic, assign) CGFloat lastValue;
@@ -50,7 +52,15 @@
     [self drawTrackCircle];
     [self drawProgressCircle];
      [self configureSelfShadowEffect];
-}
+    
+
+    
+ }
+
+
+
+
+
 
 
 - (void)drawTrackCircle {
@@ -91,8 +101,8 @@
     //    clockwise：YES为顺时针，No为逆时针
     [path addArcWithCenter:center
                     radius:radius
-                startAngle:0
-                  endAngle:2*M_PI
+                startAngle:-0.5*M_PI
+                  endAngle:1.5*M_PI
                  clockwise:YES];
     
     _progressLayer = [CAShapeLayer layer];
