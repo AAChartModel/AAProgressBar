@@ -4,27 +4,7 @@
 //
 //  Created by An An on 2017/8/28.
 //  Copyright © 2017年 An An. All rights reserved.
-//  source code ----*** https://github.com/AAChartModel/AAMapStudio ***--- source code
-//
 
-/*
- 
- * -------------------------------------------------------------------------------
- *
- * ❀❀❀   WARM TIPS!!!   ❀❀❀
- *
- * Please contact me on GitHub,if there are any problems encountered in use.
- * GitHub Issues : https://github.com/AAChartModel/AAMapStudio/issues
- * -------------------------------------------------------------------------------
- * And if you want to contribute for this project, please contact me as well
- * GitHub        : https://github.com/AAChartModel
- * StackOverflow : https://stackoverflow.com/users/7842508/codeforu
- * JianShu       : http://www.jianshu.com/u/f1e6753d4254
- * SegmentFault  : https://segmentfault.com/u/huanghunbieguan
- *
- * -------------------------------------------------------------------------------
- 
- */
 
 #import "AARippleView.h"
 @interface AARippleView ()
@@ -39,7 +19,7 @@
     self = [super init];
     if (self) {
         self.visionColor = [UIColor redColor];
-        self.instanceDelay = 1;
+        self.instanceDelay = 0.1;
         self.instanceCount = 6;
     }
     return self;
@@ -85,7 +65,7 @@
     
     CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
     animationGroup.animations = @[alphaAnimation, scaleAnimation];
-    animationGroup.duration = 4.0;
+    animationGroup.duration = 2.0;
     animationGroup.autoreverses = NO;
     animationGroup.repeatCount = HUGE;
     

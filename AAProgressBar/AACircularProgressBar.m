@@ -15,7 +15,6 @@
 
 @property (nonatomic, strong) CAShapeLayer *trackLayer;
 @property (nonatomic, strong) CAShapeLayer *progressLayer;
-@property (nonatomic, strong) UILabel *contentLabel;
 @property (nonatomic, assign) CGFloat lastValue;
 
 @end
@@ -50,8 +49,7 @@
     self.lastValue = 0;
     [self drawTrackCircle];
     [self drawProgressCircle];
-    [self configureTheTextContentLabel];
-    [self configureSelfShadowEffect];
+     [self configureSelfShadowEffect];
 }
 
 
@@ -120,15 +118,7 @@
     gradientLayer.mask = _progressLayer;
 }
 
-- (void)configureTheTextContentLabel {
-    _contentLabel = [[UILabel alloc]init];
-    _contentLabel.textAlignment = NSTextAlignmentCenter;
-    _contentLabel.bounds = CGRectMake(0, 0, self.bounds.size.width, 30);
-    CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height+20);
-    _contentLabel.center = center;
-    [self addSubview:_contentLabel];
-//    _contentLabel.center = self.center;
-}
+
 
 - (void)configureSelfShadowEffect {
     self.backgroundColor = [UIColor whiteColor];
@@ -167,7 +157,6 @@
     self.lastValue = progressValue;
     //中间 Label 数值变动
     NSNumber *valueNum = [NSNumber numberWithFloat:self.value];
-    self.contentLabel.attributedText = [self configureTheTextContent:[NSString stringWithFormat:@"%@",valueNum]];
     
 }
 
@@ -178,27 +167,7 @@
     }
 }
 
-- (NSAttributedString *)configureTheTextContent:(NSString *)textContent {
-    NSMutableParagraphStyle* textStyle = NSMutableParagraphStyle.defaultParagraphStyle.mutableCopy;
-    textStyle.alignment = NSTextAlignmentCenter;
-    
-    NSDictionary* valueFontAttributes = @{NSFontAttributeName:[UIFont fontWithName: @"HelveticaNeue-Bold" size:27],
-                                          NSForegroundColorAttributeName:kProgressBarThemeColor,
-                                          NSParagraphStyleAttributeName:textStyle};
-    
-    NSMutableAttributedString *text = [NSMutableAttributedString new];
-    NSAttributedString* value = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%%",textContent] attributes:valueFontAttributes];
-    [text appendAttributedString:value];
-    
-    
-    NSDictionary* unitFontAttributes = @{NSFontAttributeName:[UIFont fontWithName: @"HelveticaNeue" size:13],
-                                         NSForegroundColorAttributeName:[UIColor grayColor],
-                                         NSParagraphStyleAttributeName:textStyle};
-    
-    NSAttributedString* unit = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@   ",self.unitString] attributes:unitFontAttributes];
-    [text appendAttributedString:unit];
-    return text;
-}
+
 
 - (void)setValue:(CGFloat)value {
     _value = value;
