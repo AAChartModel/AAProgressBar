@@ -62,7 +62,7 @@
         [self.view addSubview:downLoadBtn];
         downLoadBtn.isWorking = YES;
         downLoadBtn.didSelectedDelegate = self;
-        downLoadBtn.progressValue = 0.67;
+        downLoadBtn.progressValue = 0.965647;
 
         
         
@@ -70,7 +70,7 @@
 //
 //        };
         
-//        [self virtualUpdateTheChartViewDataInRealTime];
+        [self virtualUpdateTheChartViewDataInRealTime];
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(0, 200, 50, 50);

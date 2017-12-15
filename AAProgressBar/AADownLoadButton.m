@@ -68,15 +68,18 @@
     CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height+20);
     _contentLabel.center = center;
     [self addSubview:_contentLabel];
-    //    _contentLabel.center = self.center;
     
-    NSNumber *valueNum = [NSNumber numberWithFloat:_progressValue];
-    
-    _contentLabel.attributedText = [self configureTheTextContent:[NSString stringWithFormat:@"%@",valueNum]];
+    _contentLabel.attributedText = [self configureTheTextContent:_progressValue];
 
 }
 
-- (NSAttributedString *)configureTheTextContent:(NSString *)textContent {
+
+
+- (NSAttributedString *)configureTheTextContent:(float )progressValue {
+    
+    float textValue = [self roundFloat:progressValue];
+    NSNumber *valueNum = [NSNumber numberWithFloat:textValue*100];
+    NSString *textContent = [NSString stringWithFormat:@"%@",valueNum];
     
     NSMutableParagraphStyle* textStyle = NSMutableParagraphStyle.defaultParagraphStyle.mutableCopy;
     textStyle.alignment = NSTextAlignmentCenter;
@@ -118,8 +121,8 @@
         [_rippleView stopAnimation];
         lineView.isDownloading = NO;;
     }
-    NSNumber *valueNum = [NSNumber numberWithFloat:_progressValue*100];
-    _contentLabel.attributedText = [self configureTheTextContent:[NSString stringWithFormat:@"%@",valueNum]];
+    
+    _contentLabel.attributedText = [self configureTheTextContent:_progressValue];
 
     
     if (self.didSelectedBlock != nil) {
@@ -133,15 +136,41 @@
 - (void)setProgressValue:(CGFloat)progressValue {
     _progressValue = progressValue;
     _circleProgressBar.value = _progressValue*100;
+    
+    if (_progressValue >= 1) {
+        [_rippleView stopAnimation];
+        lineView.isDownloading = NO;
+        self.userInteractionEnabled  = NO;
+        _contentLabel.attributedText = [self configureTheTextContent:1];
+        return;
+    }
+    
+    _contentLabel.attributedText = [self configureTheTextContent:_progressValue];
+}
 
-    NSNumber *valueNum = [NSNumber numberWithFloat:_progressValue*100];
-    _contentLabel.attributedText = [self configureTheTextContent:[NSString stringWithFormat:@"%@",valueNum]];
+//小数只保留小数点后两位
+- (float)roundFloat:(float)price {
+    NSString *temp = [NSString stringWithFormat:@"%f",price];
+    NSDecimalNumber *numResult = [NSDecimalNumber decimalNumberWithString:temp];
+    NSDecimalNumberHandler *roundUp = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundBankers
+                                                                                             scale:4
+                                                                                  raiseOnExactness:NO
+                                                                                   raiseOnOverflow:NO
+                                                                                  raiseOnUnderflow:NO
+                                                                               raiseOnDivideByZero:YES];
+    return [[numResult decimalNumberByRoundingAccordingToBehavior:roundUp] floatValue];
 }
 
 - (void)setIsWorking:(BOOL)isWorking {
     _isWorking = isWorking;
-    [_rippleView beginAnimation];
-   lineView.isDownloading = YES;
+    if (isWorking) {
+        [_rippleView beginAnimation];
+        lineView.isDownloading = YES;
+    } else {
+        [_rippleView stopAnimation];
+        lineView.isDownloading = NO;
+    }
+    
 }
 
 
